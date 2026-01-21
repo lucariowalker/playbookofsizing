@@ -1,339 +1,339 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Playbook Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            /* --- FONDO BLANCO PURO --- */
-            --bg-body: #ffffff; 
-            
-            --bg-card: #ffffff;
-            --text-primary: #1a1a1a;
-            --text-secondary: #595959;
-            
-            --profit-color: #00b894; 
-            --profit-bg: #e6fcf5;
-            --drawdown-color: #ff4757; 
-            --drawdown-bg: #ffeef0;
-            
-            --border: #f0f0f0; /* Borde muy sutil */
-            --shadow: 0 4px 20px rgba(0,0,0,0.03); /* Sombra ultra suave */
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trading Playbook Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-        [data-theme="dark"] {
-            --bg-body: #121212;
-            --bg-card: #1e1e1e;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --border: #333333;
-            --shadow: 0 8px 30px rgba(0,0,0,0.5);
-        }
+<style>
+:root {
+/* --- FONDO BLANCO PURO --- */
+--bg-body: #ffffff;
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-primary);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            transition: background 0.3s ease;
-        }
+--bg-card: #ffffff;
+--text-primary: #1a1a1a;
+--text-secondary: #595959;
 
-        .main-card {
-            width: 100%;
-            max-width: 1000px;
-            background: var(--bg-card);
-            border-radius: 24px;
-            /* Sombra y borde sutiles para definir el área sin oscurecer */
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
+--profit-color: #00b894;
+--profit-bg: #e6fcf5;
+--drawdown-color: #ff4757;
+--drawdown-bg: #ffeef0;
 
-        /* --- HEADER --- */
-        .header {
-            padding: 30px 40px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+--border: #f0f0f0; /* Borde muy sutil */
+--shadow: 0 4px 20px rgba(0,0,0,0.03); /* Sombra ultra suave */
+}
 
-        h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-            font-size: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-            margin: 0;
-            color: var(--text-primary);
-        }
+[data-theme="dark"] {
+--bg-body: #121212;
+--bg-card: #1e1e1e;
+--text-primary: #ffffff;
+--text-secondary: #a0a0a0;
+--border: #333333;
+--shadow: 0 8px 30px rgba(0,0,0,0.5);
+}
 
-        .toggle-btn {
-            background: none;
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            padding: 8px 16px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .toggle-btn:hover {
-            border-color: var(--text-primary);
-            color: var(--text-primary);
-        }
+body {
+font-family: 'Inter', sans-serif;
+background-color: var(--bg-body);
+color: var(--text-primary);
+margin: 0;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+padding: 20px;
+transition: background 0.3s ease;
+}
 
-        /* --- CONTENIDO --- */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            min-height: 500px;
-        }
+.main-card {
+width: 100%;
+max-width: 1000px;
+background: var(--bg-card);
+border-radius: 24px;
+/* Sombra y borde sutiles para definir el área sin oscurecer */
+box-shadow: var(--shadow);
+border: 1px solid var(--border);
+display: flex;
+flex-direction: column;
+overflow: hidden;
+}
 
-        /* --- ZONA GRÁFICA --- */
-        .chart-section {
-            padding: 20px;
-            position: relative;
-            /* Fondo de puntos muy sutil para dar textura sin oscurecer */
-            background-image: radial-gradient(var(--border) 1px, transparent 1px);
-            background-size: 20px 20px;
-            border-right: 1px solid var(--border);
-        }
+/* --- HEADER --- */
+.header {
+padding: 30px 40px;
+border-bottom: 1px solid var(--border);
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
 
-        svg {
-            width: 100%;
-            height: 100%;
-            overflow: visible;
-        }
+h1 {
+font-family: 'Montserrat', sans-serif;
+font-weight: 800;
+font-size: 1.5rem;
+text-transform: uppercase;
+letter-spacing: -0.5px;
+margin: 0;
+color: var(--text-primary);
+}
 
-        .chart-line {
-            fill: none;
-            stroke-width: 4px;
-            stroke-linecap: round;
-            opacity: 0.2;
-            transition: opacity 0.3s ease;
-        }
-        
-        .line-baseline { stroke: var(--text-secondary); stroke-dasharray: 6; stroke-width: 2px; opacity: 0.2; }
-        .line-profit { stroke: var(--profit-color); }
-        .line-drawdown { stroke: var(--drawdown-color); }
+.toggle-btn {
+background: none;
+border: 1px solid var(--border);
+color: var(--text-secondary);
+font-family: 'Inter', sans-serif;
+font-weight: 600;
+padding: 8px 16px;
+border-radius: 50px;
+cursor: pointer;
+transition: all 0.2s;
+}
+.toggle-btn:hover {
+border-color: var(--text-primary);
+color: var(--text-primary);
+}
 
-        .chart-line.active {
-            opacity: 1;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
-        }
+/* --- CONTENIDO --- */
+.content-grid {
+display: grid;
+grid-template-columns: 1.2fr 1fr;
+min-height: 500px;
+}
 
-        .chart-node { cursor: pointer; }
-        
-        .node-visible {
-            r: 8;
-            fill: var(--bg-card);
-            stroke-width: 3px;
-            transition: all 0.2s ease;
-        }
-        .profit .node-visible { stroke: var(--profit-color); }
-        .drawdown .node-visible { stroke: var(--drawdown-color); }
+/* --- ZONA GRÁFICA --- */
+.chart-section {
+padding: 20px;
+position: relative;
+/* Fondo de puntos muy sutil para dar textura sin oscurecer */
+background-image: radial-gradient(var(--border) 1px, transparent 1px);
+background-size: 20px 20px;
+border-right: 1px solid var(--border);
+}
 
-        .node-hit-area {
-            r: 25;
-            fill: transparent;
-            pointer-events: all;
-        }
+svg {
+width: 100%;
+height: 100%;
+overflow: visible;
+}
 
-        .chart-node.active .node-visible {
-            fill: currentColor;
-            r: 10;
-            stroke-width: 0;
-        }
-        .chart-node.profit { color: var(--profit-color); }
-        .chart-node.drawdown { color: var(--drawdown-color); }
+.chart-line {
+fill: none;
+stroke-width: 4px;
+stroke-linecap: round;
+opacity: 0.2;
+transition: opacity 0.3s ease;
+}
 
-        .node-label {
-            font-size: 11px;
-            font-weight: 700;
-            fill: var(--text-secondary);
-            text-anchor: middle;
-            transform: translateY(25px);
-            pointer-events: none;
-            font-family: 'Inter', sans-serif;
-            opacity: 0.7;
-        }
+.line-baseline { stroke: var(--text-secondary); stroke-dasharray: 6; stroke-width: 2px; opacity: 0.2; }
+.line-profit { stroke: var(--profit-color); }
+.line-drawdown { stroke: var(--drawdown-color); }
 
-        /* --- ZONA INFO --- */
-        .info-section {
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+.chart-line.active {
+opacity: 1;
+filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
+}
 
-        .fade-in { animation: fadeIn 0.3s ease-out forwards; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+.chart-node { cursor: pointer; }
 
-        .badge {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-        .badge.profit { background: var(--profit-bg); color: var(--profit-color); }
-        .badge.drawdown { background: var(--drawdown-bg); color: var(--drawdown-color); }
+.node-visible {
+r: 8;
+fill: var(--bg-card);
+stroke-width: 3px;
+transition: all 0.2s ease;
+}
+.profit .node-visible { stroke: var(--profit-color); }
+.drawdown .node-visible { stroke: var(--drawdown-color); }
 
-        .info-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin: 0 0 24px 0;
-            line-height: 1.2;
-            color: var(--text-primary);
-        }
+.node-hit-area {
+r: 25;
+fill: transparent;
+pointer-events: all;
+}
 
-        ul.rules-list { padding: 0; margin: 0; list-style: none; }
+.chart-node.active .node-visible {
+fill: currentColor;
+r: 10;
+stroke-width: 0;
+}
+.chart-node.profit { color: var(--profit-color); }
+.chart-node.drawdown { color: var(--drawdown-color); }
 
-        li.rule-item {
-            position: relative;
-            padding-left: 24px;
-            margin-bottom: 16px;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: var(--text-primary);
-        }
+.node-label {
+font-size: 11px;
+font-weight: 700;
+fill: var(--text-secondary);
+text-anchor: middle;
+transform: translateY(25px);
+pointer-events: none;
+font-family: 'Inter', sans-serif;
+opacity: 0.7;
+}
 
-        li.rule-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 10px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-        .profit li.rule-item::before { background-color: var(--profit-color); }
-        .drawdown li.rule-item::before { background-color: var(--drawdown-color); }
+/* --- ZONA INFO --- */
+.info-section {
+padding: 40px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+}
 
-        .psych-tip {
-            margin-top: 30px;
-            padding: 20px;
-            border-radius: 12px;
-            background: var(--bg-body); /* Se adapta al fondo general */
-            border: 1px solid var(--border);
-            border-left: 4px solid var(--text-secondary);
-            font-style: italic;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
+.fade-in { animation: fadeIn 0.3s ease-out forwards; }
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(5px); }
+to { opacity: 1; transform: translateY(0); }
+}
 
-        @media (max-width: 768px) {
-            .content-grid { grid-template-columns: 1fr; }
-            .chart-section { height: 350px; border-right: none; border-bottom: 1px solid var(--border); }
-        }
-    </style>
+.badge {
+display: inline-block;
+padding: 6px 12px;
+border-radius: 8px;
+font-size: 0.75rem;
+font-weight: 800;
+letter-spacing: 1px;
+text-transform: uppercase;
+margin-bottom: 20px;
+}
+.badge.profit { background: var(--profit-bg); color: var(--profit-color); }
+.badge.drawdown { background: var(--drawdown-bg); color: var(--drawdown-color); }
+
+.info-title {
+font-family: 'Montserrat', sans-serif;
+font-size: 1.8rem;
+font-weight: 800;
+margin: 0 0 24px 0;
+line-height: 1.2;
+color: var(--text-primary);
+}
+
+ul.rules-list { padding: 0; margin: 0; list-style: none; }
+
+li.rule-item {
+position: relative;
+padding-left: 24px;
+margin-bottom: 16px;
+font-size: 0.95rem;
+line-height: 1.6;
+color: var(--text-primary);
+}
+
+li.rule-item::before {
+content: '';
+position: absolute;
+left: 0;
+top: 10px;
+width: 8px;
+height: 8px;
+border-radius: 50%;
+}
+.profit li.rule-item::before { background-color: var(--profit-color); }
+.drawdown li.rule-item::before { background-color: var(--drawdown-color); }
+
+.psych-tip {
+margin-top: 30px;
+padding: 20px;
+border-radius: 12px;
+background: var(--bg-body); /* Se adapta al fondo general */
+border: 1px solid var(--border);
+border-left: 4px solid var(--text-secondary);
+font-style: italic;
+font-size: 0.9rem;
+color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+.content-grid { grid-template-columns: 1fr; }
+.chart-section { height: 350px; border-right: none; border-bottom: 1px solid var(--border); }
+}
+</style>
 </head>
 <body>
 
 <div class="main-card">
-    <div class="header">
-        <h1>Trading Playbook</h1>
-        <button class="toggle-btn" onclick="toggleTheme()">Dark Mode</button>
-    </div>
+<div class="header">
+<h1>Trading Playbook</h1>
+<button class="toggle-btn" onclick="toggleTheme()">Dark Mode</button>
+</div>
 
-    <div class="content-grid">
-        <div class="chart-section">
-            <svg viewBox="0 0 600 400" preserveAspectRatio="xMidYMid meet">
-                <line x1="20" y1="200" x2="580" y2="200" class="chart-line line-baseline" />
-                <text x="30" y="190" fill="var(--text-secondary)" font-size="10" font-weight="700" opacity="0.5">BALANCE INICIAL</text>
+<div class="content-grid">
+<div class="chart-section">
+<svg viewBox="0 0 600 400" preserveAspectRatio="xMidYMid meet">
+<line x1="20" y1="200" x2="580" y2="200" class="chart-line line-baseline" />
+<text x="30" y="190" fill="var(--text-secondary)" font-size="10" font-weight="700" opacity="0.5">BALANCE INICIAL</text>
 
-                <path id="path-profit" class="chart-line line-profit" 
-                      d="M50,200 C100,200 120,150 200,150 C 260,150 280,180 350,170 C 420,160 450,50 550,50" />
-                <path id="path-drawdown" class="chart-line line-drawdown" 
-                      d="M50,200 C100,200 120,250 200,250 C 280,250 300,320 350,320 C 400,320 450,350 550,350" />
+<path id="path-profit" class="chart-line line-profit"
+d="M50,200 C100,200 120,150 200,150 C 260,150 280,180 350,170 C 420,160 450,50 550,50" />
+<path id="path-drawdown" class="chart-line line-drawdown"
+d="M50,200 C100,200 120,250 200,250 C 280,250 300,320 350,320 C 400,320 450,350 550,350" />
 
-                <!-- PROFIT NODES -->
-                <g class="chart-node profit" id="node-p1" onclick="loadStage('p1')" transform="translate(200, 150)">
-                    <circle class="node-visible" cx="0" cy="0" />
-                    <circle class="node-hit-area" cx="0" cy="0" />
-                    <text class="node-label">ETAPA 1</text>
-                </g>
-                <g class="chart-node profit" id="node-p2" onclick="loadStage('p2')" transform="translate(350, 170)">
-                    <circle class="node-visible" cx="0" cy="0" />
-                    <circle class="node-hit-area" cx="0" cy="0" />
-                    <text class="node-label" y="24">ETAPA 2</text>
-                </g>
-                <g class="chart-node profit" id="node-p3" onclick="loadStage('p3')" transform="translate(550, 50)">
-                    <circle class="node-visible" cx="0" cy="0" />
-                    <circle class="node-hit-area" cx="0" cy="0" />
-                    <text class="node-label">ETAPA 3</text>
-                </g>
+<!-- PROFIT NODES -->
+<g class="chart-node profit" id="node-p1" onclick="loadStage('p1')" transform="translate(200, 150)">
+<circle class="node-visible" cx="0" cy="0" />
+<circle class="node-hit-area" cx="0" cy="0" />
+<text class="node-label">ETAPA 1</text>
+</g>
+<g class="chart-node profit" id="node-p2" onclick="loadStage('p2')" transform="translate(350, 170)">
+<circle class="node-visible" cx="0" cy="0" />
+<circle class="node-hit-area" cx="0" cy="0" />
+<text class="node-label" y="24">ETAPA 2</text>
+</g>
+<g class="chart-node profit" id="node-p3" onclick="loadStage('p3')" transform="translate(550, 50)">
+<circle class="node-visible" cx="0" cy="0" />
+<circle class="node-hit-area" cx="0" cy="0" />
+<text class="node-label">ETAPA 3</text>
+</g>
 
-                <!-- DRAWDOWN NODES -->
-                <g class="chart-node drawdown" id="node-d1" onclick="loadStage('d1')" transform="translate(200, 250)">
-                    <circle class="node-visible" cx="0" cy="0" />
-                    <circle class="node-hit-area" cx="0" cy="0" />
-                    <text class="node-label">ETAPA 1</text>
-                </g>
-                <g class="chart-node drawdown" id="node-d2" onclick="loadStage('d2')" transform="translate(350, 320)">
-                    <circle class="node-visible" cx="0" cy="0" />
-                    <circle class="node-hit-area" cx="0" cy="0" />
-                    <text class="node-label">ETAPA 2</text>
-                </g>
-                <g class="chart-node drawdown" id="node-d3" onclick="loadStage('d3')" transform="translate(550, 350)">
-                    <circle class="node-visible" cx="0" cy="0" />
-                    <circle class="node-hit-area" cx="0" cy="0" />
-                    <text class="node-label">ETAPA 3</text>
-                </g>
-            </svg>
-        </div>
+<!-- DRAWDOWN NODES -->
+<g class="chart-node drawdown" id="node-d1" onclick="loadStage('d1')" transform="translate(200, 250)">
+<circle class="node-visible" cx="0" cy="0" />
+<circle class="node-hit-area" cx="0" cy="0" />
+<text class="node-label">ETAPA 1</text>
+</g>
+<g class="chart-node drawdown" id="node-d2" onclick="loadStage('d2')" transform="translate(350, 320)">
+<circle class="node-visible" cx="0" cy="0" />
+<circle class="node-hit-area" cx="0" cy="0" />
+<text class="node-label">ETAPA 2</text>
+</g>
+<g class="chart-node drawdown" id="node-d3" onclick="loadStage('d3')" transform="translate(550, 350)">
+<circle class="node-visible" cx="0" cy="0" />
+<circle class="node-hit-area" cx="0" cy="0" />
+<text class="node-label">ETAPA 3</text>
+</g>
+</svg>
+</div>
 
-        <div class="info-section" id="info-container">
-            <!-- Content -->
-        </div>
-    </div>
+<div class="info-section" id="info-container">
+<!-- Content -->
+</div>
+</div>
 </div>
 
 <script>
-    const stages = {
-        p1: { type: 'profit', badge: 'PROFIT - ETAPA 1', title: 'Inicio y Construcción', rules: ['(Si hay 3 SL seguidos alejarse del mercado en la semana)', 'Perdida máxima 2.5% en la semana', 'Sesiones de Asia Reducir un 50% de Risk', 'Subir la cuenta +5% en adelante el primer mes'], tip: 'Si te sientes mal no Operas o bajas un 75% del Risk' },
-        p2: { type: 'profit', badge: 'PROFIT - ETAPA 2', title: 'Gestión del Retroceso', rules: ['Si subes tu cuenta un 5% y luego la bajas a un 3.5% (cediendo 30% de ganancias): Reduce el Risk un 50% y ajusta hasta volver al 5%', 'Cuando estamos en racha positiva hay que ser más exigentes y disciplinados', 'Es donde más probabilidades hay de bajar la cuenta bruscamente y perder lo ganado', 'Evita la sobre confianza y la avaricia'], tip: 'Si te sientes mal no Operas o bajas un 75% del Risk' },
-        p3: { type: 'profit', badge: 'PROFIT - ETAPA 3', title: 'Maximización', rules: ['En esta Etapa estamos en el mejor momento: subimos la cuenta y solucionamos los obstáculos', 'Si la cuenta llegó a +10% ajusta la categoría A+ (Risk=2%)', 'Los resultados pueden ser aún más exponenciales', 'Si hay Drawdown: operaremos como "Etapa 1 Drawdown" (Risk 50%, max DD 4.5%)', 'Si la cuenta baja del 10% el Sizing vuelve a la normalidad'], tip: 'Si te sientes mal no Operas o bajas un 75% del Risk' },
-        d1: { type: 'drawdown', badge: 'DRAWDOWN - ETAPA 1', title: 'Primeras Alertas', rules: ['(Si hay 3 SL seguidos alejarse del mercado en la semana)', 'Perdida máxima 2.5% en la semana', 'Sesiones de Asia Reducir un 50% de Risk', 'Perdida máxima 4.5% en 2 semanas consecutivas de SL', 'Reducir el riesgo un 50% en la tercera semana (Perdida máxima 5.5%)', 'Drawdown máximo en el mes 5.5% y no se opera más'], tip: 'Si te sientes mal no Operas o bajas un 75% del Risk' },
-        d2: { type: 'drawdown', badge: 'DRAWDOWN - ETAPA 2', title: 'Protección de Capital', rules: ['En el segundo mes operaremos con riesgo reducido al 50% y max 2 SL en la semana', 'Si la cuenta baja a -6.5% en la semana 2: reduce el drawdown un 60%', 'Mantener ese Riesgo hasta volver a subir la cuenta a -5.5%', 'Si la cuenta baja a -6.9%: dejar de operar en el mes (Solo operar A+ con riesgo mínimo)'], tip: 'Si te sientes mal no Operas o bajas un 75% del Risk' },
-        d3: { type: 'drawdown', badge: 'DRAWDOWN - ETAPA 3', title: 'Escenario Crítico', rules: ['En este tercer mes llevaríamos >10 SL (escenario poco probable)', 'El Sizing después de la semana 3 de Etapa 1 funciona igual pero con riesgo reducido', 'Sizing y Risk van aumentando solo si se sube la cuenta progresivamente hasta -4.5%', 'De -4.5% en adelante se utilizaría el Risk normal'], tip: 'Si te sientes mal no Operas o bajas un 75% del Risk' }
-    };
+const stages = {
+p1: { type: 'profit', badge: 'PROFIT - ETAPA 1', title: 'Inicio y Construcción', rules: ['(Si hay 3 SL seguidos alejarse del mercado en la semana)', 'Perdida máxima 2.5% en la semana', 'Sesiones de Asia Reducir un 50% de Risk', 'Subir la cuenta +5% en adelante el primer mes'], tip: 'Si te sientes mal, no Operes o baja un 75% del Riesgo' },
+p2: { type: 'profit', badge: 'PROFIT - ETAPA 2', title: 'Gestión del Retroceso', rules: ['Si subes tu cuenta un 5% y luego la bajas a un 3.5% (cediendo 30% de ganancias): Reduce el Risk un 50% y ajusta hasta volver al 5%', 'Cuando estamos en racha positiva hay que ser más exigentes y disciplinados', 'Es donde más probabilidades hay de bajar la cuenta bruscamente y perder lo ganado', 'Evita la sobre confianza y la avaricia'], tip: 'Si te sientes mal, no Operes o baja un 75% del Riesgo' },
+p3: { type: 'profit', badge: 'PROFIT - ETAPA 3', title: 'Maximización', rules: ['En esta Etapa estamos en el mejor momento: subimos la cuenta y solucionamos los obstáculos', 'Si la cuenta llegó a +10% ajusta la categoría A+ (Risk=2%)', 'Los resultados pueden ser aún más exponenciales', 'Si hay Drawdown: operaremos como "Etapa 1 Drawdown" (Risk 50%, max DD 4.5%)', 'Si la cuenta baja del 10% el Sizing vuelve a la normalidad'], tip: 'Si te sientes mal, no Operes o baja un 75% del Riesgo' },
+d1: { type: 'drawdown', badge: 'DRAWDOWN - ETAPA 1', title: 'Primeras Alertas', rules: ['(Si hay 3 SL seguidos alejarse del mercado en la semana)', 'Perdida máxima 2.5% en la semana', 'Sesiones de Asia Reducir un 50% de Risk', 'Perdida máxima 4.5% en 2 semanas consecutivas de SL', 'Reducir el riesgo un 50% en la tercera semana (Perdida máxima 5.5%)', 'Drawdown máximo en el mes 5.5% y no se opera más'], tip: 'Si te sientes mal, no Operes o baja un 75% del Riesgo' },
+d2: { type: 'drawdown', badge: 'DRAWDOWN - ETAPA 2', title: 'Protección de Capital', rules: ['En el segundo mes operaremos con riesgo reducido al 50% y max 2 SL en la semana', 'Si la cuenta baja a un -6.5% en la semana 2 del mes reduce el drawdown de un 50% a un 60%', 'Mantener ese Riesgo hasta volver a subir la cuenta a -5.5%', 'Si la cuenta baja a -6.9%: dejar de operar en el mes (Solo operar A+ con riesgo mínimo)'], tip: 'Si te sientes mal, no Operes o baja un 75% del Riesgo' },
+d3: { type: 'drawdown', badge: 'DRAWDOWN - ETAPA 3', title: 'Escenario Crítico', rules: ['En este Tercer mes llevaríamos >10 SL (escenario poco probable)', 'En esta etapa hay condiciones:', 'Condicion 1: <em>El riesgo es igual a la etapa 2 (un 60% ), pero se disminuirá dependiendo de cada semana de drawdown que vaya pasando</em>', 'Condición 2: Tanto el Sizing como el Risk van aumentando si se va subiendo la cuenta progresivamente hasta estar en un -4.5% de ahí en adelante se utilizaría el Risk normal'], tip: 'Si te sientes mal, no Operes o baja un 75% del Riesgo' }
+};
 
-    function loadStage(key) {
-        const data = stages[key];
-        const container = document.getElementById('info-container');
-        document.querySelectorAll('.chart-node').forEach(n => n.classList.remove('active'));
-        document.querySelectorAll('.chart-line').forEach(l => l.classList.remove('active'));
-        document.getElementById(`node-${key}`).classList.add('active');
-        document.getElementById(`path-${data.type}`).classList.add('active');
-        const listItems = data.rules.map(rule => `<li class="rule-item">${rule}</li>`).join('');
-        container.innerHTML = `<div class="fade-in ${data.type}"><span class="badge ${data.type}">${data.badge}</span><h2 class="info-title">${data.title}</h2><ul class="rules-list">${listItems}</ul><div class="psych-tip">🧠 ${data.tip}</div></div>`;
-    }
-    function toggleTheme() {
-        const body = document.body;
-        if (body.getAttribute('data-theme') === 'dark') body.removeAttribute('data-theme');
-        else body.setAttribute('data-theme', 'dark');
-    }
-    loadStage('p1');
+function loadStage(key) {
+const data = stages[key];
+const container = document.getElementById('info-container');
+document.querySelectorAll('.chart-node').forEach(n => n.classList.remove('active'));
+document.querySelectorAll('.chart-line').forEach(l => l.classList.remove('active'));
+document.getElementById(`node-${key}`).classList.add('active');
+document.getElementById(`path-${data.type}`).classList.add('active');
+const listItems = data.rules.map(rule => `<li class="rule-item">${rule}</li>`).join('');
+container.innerHTML = `<div class="fade-in ${data.type}"><span class="badge ${data.type}">${data.badge}</span><h2 class="info-title">${data.title}</h2><ul class="rules-list">${listItems}</ul><div class="psych-tip">🧠 ${data.tip}</div></div>`;
+}
+function toggleTheme() {
+const body = document.body;
+if (body.getAttribute('data-theme') === 'dark') body.removeAttribute('data-theme');
+else body.setAttribute('data-theme', 'dark');
+}
+loadStage('p1');
 </script>
 </body>
 </html>
